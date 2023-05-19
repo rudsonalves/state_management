@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../pages/settings_page.dart';
 import '../models/person.dart';
@@ -6,16 +7,16 @@ import '../models/counter.dart';
 import '../models/limited_counter.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
-  final Counter _counter1 = Counter();
-  final LimitedCounter _counter2 = LimitedCounter();
-  final Person _person = Person();
   static const routeName = '/';
 
   @override
   Widget build(BuildContext context) {
     TextStyle? headlineMedium = Theme.of(context).textTheme.headlineMedium;
+    final Counter counter1 = Provider.of<Counter>(context);
+    final LimitedCounter counter2 = Provider.of<LimitedCounter>(context);
+    final Person person = Provider.of<Person>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,10 +26,7 @@ class HomePage extends StatelessWidget {
           IconButton.filledTonal(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.of(context).pushNamed(
-                SettingsPage.routeName,
-                arguments: [_counter1, _counter2, _person],
-              );
+              Navigator.of(context).pushNamed(SettingsPage.routeName);
             },
           ),
         ],
@@ -44,18 +42,18 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: _counter1.decrement,
+                    onPressed: counter1.decrement,
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
                   ValueListenableBuilder(
-                    valueListenable: _counter1.$value,
+                    valueListenable: counter1.$value,
                     builder: (context, value, _) {
                       return Text('$value', style: headlineMedium);
                     },
                   ),
                   ElevatedButton.icon(
-                    onPressed: _counter1.increment,
+                    onPressed: counter1.increment,
                     icon: const Icon(Icons.add),
                     label: const Text('Up'),
                   ),
@@ -67,18 +65,18 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: _counter2.decrement,
+                    onPressed: counter2.decrement,
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
                   ValueListenableBuilder(
-                    valueListenable: _counter2.$value,
+                    valueListenable: counter2.$value,
                     builder: (context, value, _) {
                       return Text('$value', style: headlineMedium);
                     },
                   ),
                   ElevatedButton.icon(
-                    onPressed: _counter2.increment,
+                    onPressed: counter2.increment,
                     icon: const Icon(Icons.add),
                     label: const Text('Up'),
                   ),
@@ -91,7 +89,7 @@ class HomePage extends StatelessWidget {
                     flex: 2,
                     child: TextField(
                       onChanged: (name) {
-                        _person.name = name;
+                        person.name = name;
                       },
                       decoration: const InputDecoration(
                         labelText: 'Name',
@@ -104,7 +102,7 @@ class HomePage extends StatelessWidget {
                     flex: 3,
                     child: TextField(
                       onChanged: (surname) {
-                        _person.surname = surname;
+                        person.surname = surname;
                       },
                       decoration: const InputDecoration(
                         labelText: 'Surname',
@@ -123,23 +121,23 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ValueListenableBuilder(
-                        valueListenable: _person.$name,
+                        valueListenable: person.$name,
                         builder: (context, name, _) {
                           return Text('Name: "$name"');
                         },
                       ),
                       ValueListenableBuilder(
-                        valueListenable: _person.$surname,
+                        valueListenable: person.$surname,
                         builder: (context, surname, _) {
                           return Text('Surname: "$surname"');
                         },
                       ),
                       AnimatedBuilder(
                         animation: Listenable.merge(
-                          [_person.$name, _person.$surname],
+                          [person.$name, person.$surname],
                         ),
                         builder: (context, _) {
-                          return Text('Full Name: "${_person.fullName}"');
+                          return Text('Full Name: "${person.fullName}"');
                         },
                       ),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/counter.dart';
 import '../models/limited_counter.dart';
@@ -11,12 +12,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Object> list =
-        ModalRoute.of(context)!.settings.arguments as List<Object>;
-
-    final Counter counter1 = list[0] as Counter;
-    final LimitedCounter counter2 = list[1] as LimitedCounter;
-    final Person person = list[2] as Person;
+    final Counter counter1 = Provider.of<Counter>(context);
+    final LimitedCounter counter2 = Provider.of<LimitedCounter>(context);
+    final Person person = Provider.of<Person>(context);
 
     return Scaffold(
       appBar: AppBar(
