@@ -5,19 +5,13 @@ import '../models/person.dart';
 import '../models/counter.dart';
 import '../models/limited_counter.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  static const routeName = '/';
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final Counter _counter1 = Counter();
   final LimitedCounter _counter2 = LimitedCounter();
   final Person _person = Person();
+  static const routeName = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +44,18 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _counter1.decrement();
-                      });
-                    },
+                    onPressed: _counter1.decrement,
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
-                  Text('${_counter1.value}', style: headlineMedium),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _counter1.increment();
-                      });
+                  ValueListenableBuilder(
+                    valueListenable: _counter1.$value,
+                    builder: (context, value, _) {
+                      return Text('$value', style: headlineMedium);
                     },
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: _counter1.increment,
                     icon: const Icon(Icons.add),
                     label: const Text('Up'),
                   ),
@@ -76,21 +67,18 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _counter2.decrement();
-                      });
-                    },
+                    onPressed: _counter2.decrement,
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
-                  Text('${_counter2.value}', style: headlineMedium),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _counter2.increment();
-                      });
+                  ValueListenableBuilder(
+                    valueListenable: _counter2.$value,
+                    builder: (context, value, _) {
+                      return Text('$value', style: headlineMedium);
                     },
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: _counter2.increment,
                     icon: const Icon(Icons.add),
                     label: const Text('Up'),
                   ),
@@ -103,9 +91,7 @@ class _HomePageState extends State<HomePage> {
                     flex: 2,
                     child: TextField(
                       onChanged: (name) {
-                        setState(() {
-                          _person.name = name;
-                        });
+                        _person.name = name;
                       },
                       decoration: const InputDecoration(
                         labelText: 'Name',
@@ -118,9 +104,7 @@ class _HomePageState extends State<HomePage> {
                     flex: 3,
                     child: TextField(
                       onChanged: (surname) {
-                        setState(() {
-                          _person.surname = surname;
-                        });
+                        _person.surname = surname;
                       },
                       decoration: const InputDecoration(
                         labelText: 'Surname',
@@ -138,9 +122,26 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Name: "${_person.name}"'),
-                      Text('Surname: "${_person.surname}"'),
-                      Text('Full Name: "${_person.fullName}"'),
+                      ValueListenableBuilder(
+                        valueListenable: _person.$name,
+                        builder: (context, name, _) {
+                          return Text('Name: "$name"');
+                        },
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: _person.$surname,
+                        builder: (context, surname, _) {
+                          return Text('Surname: "$surname"');
+                        },
+                      ),
+                      AnimatedBuilder(
+                        animation: Listenable.merge(
+                          [_person.$name, _person.$surname],
+                        ),
+                        builder: (context, _) {
+                          return Text('Full Name: "${_person.fullName}"');
+                        },
+                      ),
                     ],
                   ),
                 ),

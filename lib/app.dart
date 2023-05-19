@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       routes: {
-        HomePage.routeName: (context) => const HomePage(),
+        HomePage.routeName: (context) => HomePage(),
         SettingsPage.routeName: (context) => const SettingsPage(),
       },
     );

@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
+
 class Person {
-  String _name = '';
-  String _surname = '';
+  ValueNotifier<String> $name = ValueNotifier('');
+  ValueNotifier<String> $surname = ValueNotifier('');
 
-  String get name => _name;
-  String get surname => _surname;
+  String get name => $name.value;
+  String get surname => $surname.value;
 
-  set name(String newName) => _name = newName;
-  set surname(String newSurname) => _surname = newSurname;
+  set name(String newName) => $name.value = newName;
+  set surname(String newSurname) => $surname.value = newSurname;
 
-  String get fullName => '$_name $_surname';
+  String get fullName => '$name $surname';
 }

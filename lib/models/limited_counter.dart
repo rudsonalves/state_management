@@ -1,19 +1,23 @@
+import 'package:flutter/material.dart';
+
 class LimitedCounter {
-  int _value = 0;
+  ValueNotifier<int> $value = ValueNotifier(0);
 
   LimitedCounter();
 
-  int get value => _value;
+  int get value => $value.value;
 
-  set value(int value) => _value = value;
+  set value(int value) => $value.value = value;
 
   void increment() {
-    _value = _value < 5 ? _value + 1 : -5;
+    value = $value.value;
+    $value.value = value < 5 ? value + 1 : -5;
   }
 
   void decrement() {
-    _value = _value > -5 ? _value - 1 : 5;
+    value = $value.value;
+    $value.value = value > -5 ? value - 1 : 5;
   }
 
-  void reset() => _value = 0;
+  void reset() => $value.value = 0;
 }

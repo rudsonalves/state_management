@@ -1,15 +1,17 @@
+import 'package:flutter/material.dart';
+
 class Counter {
-  int _value = 0;
+  ValueNotifier<int> $value = ValueNotifier(0);
 
   Counter();
 
-  int get value => _value;
+  int get value => $value.value;
 
-  set value(int value) => _value = value;
+  set value(int value) => $value.value = value;
 
-  void increment() => _value++;
+  void increment() => $value.value++;
 
-  void decrement() => _value--;
+  void decrement() => $value.value--;
 
-  void reset() => _value = 0;
+  void reset() => $value.value = 0;
 }

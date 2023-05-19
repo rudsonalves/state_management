@@ -4,16 +4,11 @@ import '../models/counter.dart';
 import '../models/limited_counter.dart';
 import '../models/person.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   static const routeName = '/settings';
 
   const SettingsPage({super.key});
 
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final List<Object> list =
@@ -31,69 +26,73 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text('Reset Counter 1: ${counter1.value}'),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      counter1.reset();
-                    });
-                  },
-                  icon: Icon(counter1.value != 0
-                      ? Icons.radio_button_unchecked_sharp
-                      : Icons.check),
-                ),
-              ],
+            ValueListenableBuilder(
+              valueListenable: counter1.$value,
+              builder: (context, value, _) {
+                return Row(
+                  children: [
+                    Text('Reset Counter 1: $value'),
+                    IconButton(
+                      onPressed: counter1.reset,
+                      icon: Icon(counter1.value != 0
+                          ? Icons.radio_button_unchecked_sharp
+                          : Icons.check),
+                    ),
+                  ],
+                );
+              },
             ),
-            Row(
-              children: [
-                Text('Reset Counter 2: ${counter2.value}'),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      counter2.reset();
-                    });
-                  },
-                  icon: Icon(counter2.value != 0
-                      ? Icons.radio_button_unchecked_sharp
-                      : Icons.check),
-                ),
-              ],
+            ValueListenableBuilder(
+              valueListenable: counter2.$value,
+              builder: (context, value, _) {
+                return Row(
+                  children: [
+                    Text('Reset Counter 2: $value'),
+                    IconButton(
+                      onPressed: counter2.reset,
+                      icon: Icon(counter2.value != 0
+                          ? Icons.radio_button_unchecked_sharp
+                          : Icons.check),
+                    ),
+                  ],
+                );
+              },
             ),
-            Row(
-              children: [
-                Text('Clear Name: "${person.name}"'),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      person.name = '';
-                    });
-                  },
-                  icon: Icon(
-                    person.name.isNotEmpty
-                        ? Icons.radio_button_unchecked_sharp
-                        : Icons.check,
-                  ),
-                ),
-              ],
+            ValueListenableBuilder(
+              valueListenable: person.$name,
+              builder: (context, name, _) {
+                return Row(
+                  children: [
+                    Text('Clear Name: "$name"'),
+                    IconButton(
+                      onPressed: () => person.name = '',
+                      icon: Icon(
+                        person.name.isNotEmpty
+                            ? Icons.radio_button_unchecked_sharp
+                            : Icons.check,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
-            Row(
-              children: [
-                Text('Clear Surname: "${person.surname}"'),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      person.surname = '';
-                    });
-                  },
-                  icon: Icon(
-                    person.surname.isNotEmpty
-                        ? Icons.radio_button_unchecked_sharp
-                        : Icons.check,
-                  ),
-                ),
-              ],
+            ValueListenableBuilder(
+              valueListenable: person.$surname,
+              builder: (context, surname, _) {
+                return Row(
+                  children: [
+                    Text('Clear Surname: "$surname"'),
+                    IconButton(
+                      onPressed: () => person.surname = '',
+                      icon: Icon(
+                        person.surname.isNotEmpty
+                            ? Icons.radio_button_unchecked_sharp
+                            : Icons.check,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
