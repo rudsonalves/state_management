@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/settings_page.dart';
@@ -46,10 +47,9 @@ class HomePage extends StatelessWidget {
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: counter1.$value,
-                    builder: (context, value, _) {
-                      return Text('$value', style: headlineMedium);
+                  Observer(
+                    builder: (context) {
+                      return Text('${counter1.value}', style: headlineMedium);
                     },
                   ),
                   ElevatedButton.icon(
@@ -69,10 +69,9 @@ class HomePage extends StatelessWidget {
                     icon: const Icon(Icons.remove),
                     label: const Text('Down'),
                   ),
-                  ValueListenableBuilder(
-                    valueListenable: counter2.$value,
-                    builder: (context, value, _) {
-                      return Text('$value', style: headlineMedium);
+                  Observer(
+                    builder: (context) {
+                      return Text('${counter2.value}', style: headlineMedium);
                     },
                   ),
                   ElevatedButton.icon(
@@ -88,9 +87,7 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: TextField(
-                      onChanged: (name) {
-                        person.name = name;
-                      },
+                      onChanged: person.setName,
                       decoration: const InputDecoration(
                         labelText: 'Name',
                         border: OutlineInputBorder(),
@@ -101,9 +98,7 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: TextField(
-                      onChanged: (surname) {
-                        person.surname = surname;
-                      },
+                      onChanged: person.setSurname,
                       decoration: const InputDecoration(
                         labelText: 'Surname',
                         border: OutlineInputBorder(),
@@ -120,23 +115,18 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ValueListenableBuilder(
-                        valueListenable: person.$name,
-                        builder: (context, name, _) {
-                          return Text('Name: "$name"');
+                      Observer(
+                        builder: (context) {
+                          return Text('Name: "${person.name}"');
                         },
                       ),
-                      ValueListenableBuilder(
-                        valueListenable: person.$surname,
-                        builder: (context, surname, _) {
-                          return Text('Surname: "$surname"');
+                      Observer(
+                        builder: (context) {
+                          return Text('Surname: "${person.surname}"');
                         },
                       ),
-                      AnimatedBuilder(
-                        animation: Listenable.merge(
-                          [person.$name, person.$surname],
-                        ),
-                        builder: (context, _) {
+                      Observer(
+                        builder: (context) {
                           return Text('Full Name: "${person.fullName}"');
                         },
                       ),

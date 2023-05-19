@@ -1,23 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 
-class LimitedCounter {
-  ValueNotifier<int> $value = ValueNotifier(0);
+part 'limited_counter.g.dart';
 
-  LimitedCounter();
+class LimitedCounter = _LimitedCounter with _$LimitedCounter;
 
-  int get value => $value.value;
+abstract class _LimitedCounter with Store {
+  @observable
+  int _value = 0;
 
-  set value(int value) => $value.value = value;
+  @computed
+  int get value => _value;
 
+  @action
+  void setValue(int value) => _value = value;
+
+  @action
   void increment() {
-    value = $value.value;
-    $value.value = value < 5 ? value + 1 : -5;
+    _value = _value < 5 ? _value + 1 : -5;
   }
 
+  @action
   void decrement() {
-    value = $value.value;
-    $value.value = value > -5 ? value - 1 : 5;
+    _value = _value > -5 ? _value - 1 : 5;
   }
 
-  void reset() => $value.value = 0;
+  @action
+  void reset() => _value = 0;
 }

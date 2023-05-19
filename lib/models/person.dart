@@ -1,14 +1,28 @@
-import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 
-class Person {
-  ValueNotifier<String> $name = ValueNotifier('');
-  ValueNotifier<String> $surname = ValueNotifier('');
+part 'person.g.dart';
 
-  String get name => $name.value;
-  String get surname => $surname.value;
+class Person = _Person with _$Person;
 
-  set name(String newName) => $name.value = newName;
-  set surname(String newSurname) => $surname.value = newSurname;
+abstract class _Person with Store {
+  @observable
+  String _name = '';
 
-  String get fullName => '$name $surname';
+  @observable
+  String _surname = '';
+
+  @computed
+  String get name => _name;
+
+  @computed
+  String get surname => _surname;
+
+  @action
+  void setName(String newName) => _name = newName;
+
+  @action
+  void setSurname(String newSurname) => _surname = newSurname;
+
+  @computed
+  String get fullName => '$_name $_surname';
 }

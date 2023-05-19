@@ -1,17 +1,25 @@
-import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 
-class Counter {
-  ValueNotifier<int> $value = ValueNotifier(0);
+part 'counter.g.dart';
 
-  Counter();
+class Counter = _Counter with _$Counter;
 
-  int get value => $value.value;
+abstract class _Counter with Store {
+  @observable
+  int _value = 0;
 
-  set value(int value) => $value.value = value;
+  @computed
+  int get value => _value;
 
-  void increment() => $value.value++;
+  @action
+  void setValue(int value) => _value = value;
 
-  void decrement() => $value.value--;
+  @action
+  void increment() => _value++;
 
-  void reset() => $value.value = 0;
+  @action
+  void decrement() => _value--;
+
+  @action
+  void reset() => _value = 0;
 }

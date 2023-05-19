@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 import '../models/counter.dart';
@@ -24,12 +25,11 @@ class SettingsPage extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Column(
           children: [
-            ValueListenableBuilder(
-              valueListenable: counter1.$value,
-              builder: (context, value, _) {
+            Observer(
+              builder: (context) {
                 return Row(
                   children: [
-                    Text('Reset Counter 1: $value'),
+                    Text('Reset Counter 1: ${counter1.value}'),
                     IconButton(
                       onPressed: counter1.reset,
                       icon: Icon(counter1.value != 0
@@ -40,12 +40,11 @@ class SettingsPage extends StatelessWidget {
                 );
               },
             ),
-            ValueListenableBuilder(
-              valueListenable: counter2.$value,
-              builder: (context, value, _) {
+            Observer(
+              builder: (context) {
                 return Row(
                   children: [
-                    Text('Reset Counter 2: $value'),
+                    Text('Reset Counter 2: ${counter2.value}'),
                     IconButton(
                       onPressed: counter2.reset,
                       icon: Icon(counter2.value != 0
@@ -56,14 +55,13 @@ class SettingsPage extends StatelessWidget {
                 );
               },
             ),
-            ValueListenableBuilder(
-              valueListenable: person.$name,
-              builder: (context, name, _) {
+            Observer(
+              builder: (context) {
                 return Row(
                   children: [
-                    Text('Clear Name: "$name"'),
+                    Text('Clear Name: "${person.name}"'),
                     IconButton(
-                      onPressed: () => person.name = '',
+                      onPressed: () => person.setName(''),
                       icon: Icon(
                         person.name.isNotEmpty
                             ? Icons.radio_button_unchecked_sharp
@@ -74,14 +72,13 @@ class SettingsPage extends StatelessWidget {
                 );
               },
             ),
-            ValueListenableBuilder(
-              valueListenable: person.$surname,
-              builder: (context, surname, _) {
+            Observer(
+              builder: (context) {
                 return Row(
                   children: [
-                    Text('Clear Surname: "$surname"'),
+                    Text('Clear Surname: "${person.surname}"'),
                     IconButton(
-                      onPressed: () => person.surname = '',
+                      onPressed: () => person.setSurname(''),
                       icon: Icon(
                         person.surname.isNotEmpty
                             ? Icons.radio_button_unchecked_sharp
